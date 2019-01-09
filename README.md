@@ -14,7 +14,7 @@ download MySQL_ORM.py from this repository and put it in same folder as your pro
 &nbsp;
 &nbsp;
 
-# Usage
+# Initialize
 &nbsp;
 #### Initialize
 ```
@@ -41,6 +41,10 @@ mysql = MySQL("root", "pwd", dbName="db", host='123.45.67.89', port=80)    #use 
 ```
 
 &nbsp;
+&nbsp;
+&nbsp;
+
+# Databases
 
 #### Get List Of All Databases
 ```
@@ -61,6 +65,10 @@ print(mysql.database_exists("db"))
 ```
 
 &nbsp;
+&nbsp;
+&nbsp;
+
+# Tables
 
 #### Set Database And Print All Tables In It
 ```
@@ -179,6 +187,21 @@ table.set({
 
 &nbsp;
 
+#### Set Column Values In Table Where Name is 'Thomas'
+```
+from MySQL_ORM import *
+
+mysql = MySQL("root", "pwd")
+mysql.set_database("db")
+table = mysql.table("table")
+table.where(MySQL_Condition("name", "=", "Thomas")).set({"id" : 1})
+```
+
+&nbsp;
+&nbsp;
+&nbsp;
+
+# Directly Excute Query
 
 #### Direct Query Execution(Not recommended)
 Since this is a very thin and light wrapper there will negligible improvements in excuting query directly.
