@@ -204,7 +204,7 @@ table.where(MySQL_Condition("name", "=", "Thomas")).set({"id" : 1})
 # Directly Excute Query
 
 #### Direct Query Execution(Not recommended)
-Since this is a very thin and light wrapper there will negligible improvements in excuting query directly.
+Since this is a very thin and light wrapper there will be almost no performance improvements in excuting query directly.
 This wrapper was made with 3 things in mind -
 1) Security
 2) Performance
@@ -220,7 +220,7 @@ mysql.set_database("db")
 mysql.execute_query("SELECT * FROM table;")
 ```
 
-To escape values you can use '%s' placeholder in query string and pass a 2nd argument(tuple with a values) -
+To escape values you can use '%s' placeholder in query string and pass a 2nd argument(tuple with all values) -
 
 ```
 from MySQL_ORM import *
