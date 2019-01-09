@@ -151,10 +151,10 @@ class MySQL_Table:
             )
         return [x[0] for x in data]
 
-    def set(self, *alist):
+    def set(self, ops):
         o, o1 = [], []
-        for a in alist:
-            if MySQL_Identifier_regex.match(a[0]): o.append(a[0] + "=%s"); o1.append(a[1])
+        for op in ops:
+            if MySQL_Identifier_regex.match(op): o.append(op + "=%s"); o1.append(ops[op])
             else:  raise MySQL_InvalidColumnNameError("MySQL Invalid Column name: " + a[0])
         cur_dbName = self.sql.current_dbName
         self.sql.set_database(self.dbName).execute_query (
@@ -223,17 +223,17 @@ class MySQL_Table:
 
 class MySQL:
 
-    def __init__(self, user, passwd, dbName=None, host='localhost'):
+    def __init__(self, user, passwd, dbName=None, host='localhost', port=3306):
         if dbName is None:
             self.current_dbName = None
             self.connection = MySQLdb.connect(
-                host = host, user = user, passwd = passwd
+                host = host, port = port, user = user, passwd = passwd
             )
         else:
             self.current_dbName = dbName
             self.connection = MySQLdb.connect(
-                host = host, db = dbName,
-                user = user, passwd = passwd,
+                host = host, port = port, db = dbName,
+                user = user, passwd = passwd
             )
         self.cursor = self.connection.cursor()
 
@@ -304,7 +304,7 @@ class MySQL:
     def table(self, tableName):
         if self.current_dbName is None:
             raise MySQL_TableError("MySQL Database not specified before accessing table")
-        elif MySQL_Identifier_regex.match(tableName):
+        elif MySQL_Identifier_regex.match(tableName) and self.table_exists(tableName):
             return MySQL_Table(self, tableName, self.current_dbName)
         else:
             raise MySQL_InvalidTableNameError("MySQL Invalid Table Name: " + tableName)
